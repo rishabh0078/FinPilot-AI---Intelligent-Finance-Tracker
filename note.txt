@@ -1,0 +1,35 @@
+1. ai/rag_pipeline.py (The Brain)
+This is the most important file for your Gen AI interview. It contains the core RAG logic.
+
+Vector Database (ChromaDB): Look at how it connects to ChromaDB to store data locally.
+Embeddings: Look at the store_transaction_embedding() function. It takes a raw JSON transaction from MongoDB, converts it into a readable text sentence, and saves it into ChromaDB as a mathematical vector (embedding).
+Semantic Search: Look at query_transactions(). It takes the user's chat question, searches ChromaDB, and pulls out only the transactions relevant to the user's question.
+LangChain & Groq: Look at chat_with_ai(). It uses LangChain to connect to the open-source Llama 3.3 model via the Groq API. It takes the retrieved transactions, injects them into the prompt, and gets an answer from the LLM.
+
+
+2. ai/prompts.py (The Persona)
+This file contains your Prompt Engineering.
+
+It defines the FINANCE_ADVISOR_PROMPT.
+You can explain to an interviewer how you use Prompt Templates to give the AI its persona ("FinPilot AI"), instruct it to be concise, and dynamically inject variables like {context} (the retrieved transactions) and {summary} (their total balances) into the prompt before sending it to the LLM.
+
+
+
+
+3. routes/ai.py (The API Bridge)
+This is your FastAPI endpoint for the AI.
+
+Look at the @ai_router.post("/chat") route.
+Notice how it first queries MongoDB to get the user's high-level financial_summary (Total Income, Total Expenses, Savings Goal), and then passes that summary along with the user's question to the chat_with_ai function in the RAG pipeline.
+
+
+
+
+4. frontend/src/pages/AiInsights.jsx (The Interface)
+This is the frontend React component for the AI.
+
+Explain to the interviewer how this page maintains the chat UI state and communicates with your Python backend via the sendAiMessage function (which lives in AppContext.jsx and uses Axios to hit the /ai/chat endpoint).
+
+
+
+

@@ -1,0 +1,42 @@
+# =========================
+# Secrets & Environments
+# =========================
+.env
+venv/
+env/
+ENV/
+
+# =========================
+# Python / FastAPI
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# =========================
+# AI / Vector Database
+# =========================
+chroma_data/
+*.sqlite3
+
+# =========================
+# Frontend (React / Vite)
+# =========================
+frontend/node_modules/
+frontend/dist/
+frontend/.eslintcache
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =========================
+# OS / IDE
+# =========================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
