@@ -1,0 +1,20 @@
+# Web framework & server
+fastapi
+uvicorn[standard]
+
+# Environment variables
+python-dotenv
+
+# Database
+pymongo
+
+# Authentication
+python-jose[cryptography]
+
+# AI / RAG pipeline
+chromadb
+langchain-groq
+langchain-core
+
+# Data validation (used directly in routes/ai.py; also a FastAPI dependency)
+pydantic
