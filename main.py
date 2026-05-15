@@ -4,6 +4,8 @@
 # FastAPI is a Python web framework (like Express.js for Node)
 # It lets us create API endpoints that our React frontend can call
 
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
@@ -21,11 +23,14 @@ app = FastAPI(title="FinPilot AI", version="1.0.0")
 
 # ------ CORS Setup ------
 # CORS = Cross-Origin Resource Sharing
-# Our React app runs on localhost:5173, backend on localhost:8000
-# Without CORS, the browser blocks requests between different ports
+# In development the React app runs on localhost:5173; in production the
+# frontend URL is injected via the FRONTEND_URL environment variable so
+# the backend accepts requests from whichever domain the frontend is
+# deployed to (e.g. finpilot-frontend.up.railway.app).
+frontend_url = os.getenv("FRONTEND_URL", "http://localhost:5173")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # React dev server
+    allow_origins=[frontend_url],
     allow_credentials=True,
     allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
     allow_headers=["*"],  # Allow all headers
