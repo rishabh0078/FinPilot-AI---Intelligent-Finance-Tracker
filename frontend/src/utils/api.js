@@ -2,7 +2,7 @@ import axios from 'axios'
 
 // Create an Axios instance pointing to our Python backend
 const API = axios.create({
-  baseURL: 'http://localhost:8000',
+  baseURL: 'http://finpilot-backend.railway.internal:8000',
 })
 
 // Add a request interceptor to attach the JWT token to every request automatically
