@@ -1,8 +1,15 @@
 # FinPilot AI
 
-A personal finance tracker with an AI assistant that actually knows your spending history.
+A full-stack intelligent finance tracker that goes beyond simple budgeting. FinPilot AI features a built-in financial advisor that actively monitors your spending habits and provides personalized, actionable insights based on your exact transaction history.
 
 Built with React, FastAPI, MongoDB, and a RAG pipeline (ChromaDB + LangChain + Llama 3.3 via Groq).
+
+## Live Demo
+
+You can either create a new account to test it from scratch, or log in instantly using these demo credentials:
+- **Link:** [FinPilot AI Live](https://finpilot-ai.up.railway.app/)
+- **Email:** `user@gmail.com`
+- **Password:** `123456`
 
 ## Features
 
