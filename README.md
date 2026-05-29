@@ -7,7 +7,6 @@ Built with React, FastAPI, MongoDB, and a RAG pipeline (ChromaDB + LangChain + L
 ## Live Demo
 
 You can either create a new account to test it from scratch, or log in instantly using these demo credentials:
-- **Link:** [FinPilot AI Live](https://finpilot-ai.up.railway.app/)
 - **Email:** `user@gmail.com`
 - **Password:** `123456`
 
