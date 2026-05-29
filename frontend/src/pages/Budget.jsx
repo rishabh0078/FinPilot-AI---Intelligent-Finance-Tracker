@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { useApp } from '../context/AppContext'
-import { expenseCategories, categoryColors } from '../utils/dummyData'
+import { expenseCategories, categoryColors } from '../utils/constants'
 import {
   FiDollarSign,
   FiTarget,
@@ -13,26 +13,37 @@ import {
 } from 'react-icons/fi'
 
 const Budget = () => {
-  const { user, setUser, budgets, addBudget, updateBudget, deleteBudget } =
+  const { user, updateUserProfile, budgets, addBudget, updateBudget, deleteBudget, transactions } =
     useApp()
 
   // Local state for editing income & savings goal
   const [editIncome, setEditIncome] = useState(false)
-  const [incomeVal, setIncomeVal] = useState(user?.monthlyIncome || 0)
+  const [incomeVal, setIncomeVal] = useState(user?.monthly_income || 0)
   const [editSavings, setEditSavings] = useState(false)
-  const [savingsVal, setSavingsVal] = useState(user?.savingsGoal || 0)
+  const [savingsVal, setSavingsVal] = useState(user?.savings_goal || 0)
 
   // New budget form
   const [showAdd, setShowAdd] = useState(false)
   const [newBudget, setNewBudget] = useState({ category: 'Groceries', limit: '' })
 
-  const saveIncome = () => {
-    setUser({ ...user, monthlyIncome: Number(incomeVal) })
+  // Compute spent amounts from real transactions for each budget category
+  const spentByCategory = useMemo(() => {
+    const map = {}
+    transactions
+      .filter(t => t.type === 'expense')
+      .forEach(t => {
+        map[t.category] = (map[t.category] || 0) + parseFloat(t.amount)
+      })
+    return map
+  }, [transactions])
+
+  const saveIncome = async () => {
+    await updateUserProfile({ monthly_income: Number(incomeVal) })
     setEditIncome(false)
   }
 
-  const saveSavingsGoal = () => {
-    setUser({ ...user, savingsGoal: Number(savingsVal) })
+  const saveSavingsGoal = async () => {
+    await updateUserProfile({ savings_goal: Number(savingsVal) })
     setEditSavings(false)
   }
 
@@ -69,7 +80,7 @@ const Budget = () => {
             <button
               onClick={() => {
                 setEditIncome(!editIncome)
-                setIncomeVal(user?.monthlyIncome || 0)
+                setIncomeVal(user?.monthly_income || 0)
               }}
               className="text-slate-500 hover:text-emerald-500 transition-colors"
             >
@@ -94,7 +105,7 @@ const Budget = () => {
             </div>
           ) : (
             <p className="text-3xl font-bold text-white">
-              ₹{(user?.monthlyIncome || 0).toLocaleString()}
+              ₹{(user?.monthly_income || 0).toLocaleString()}
             </p>
           )}
         </div>
@@ -113,7 +124,7 @@ const Budget = () => {
             <button
               onClick={() => {
                 setEditSavings(!editSavings)
-                setSavingsVal(user?.savingsGoal || 0)
+                setSavingsVal(user?.savings_goal || 0)
               }}
               className="text-slate-500 hover:text-violet-500 transition-colors"
             >
@@ -138,7 +149,7 @@ const Budget = () => {
             </div>
           ) : (
             <p className="text-3xl font-bold text-white">
-              ₹{(user?.savingsGoal || 0).toLocaleString()}
+              ₹{(user?.savings_goal || 0).toLocaleString()}
             </p>
           )}
         </div>
@@ -200,7 +211,8 @@ const Budget = () => {
       {/* Budget cards grid */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {budgets.map((budget) => {
-          const pct = Math.min(100, Math.round((budget.spent / budget.limit) * 100))
+          const spent = spentByCategory[budget.category] || 0
+          const pct = Math.min(100, Math.round((spent / budget.limit) * 100))
           const color = categoryColors[budget.category] || '#64748b'
           const isOver = pct >= 90
 
@@ -231,7 +243,7 @@ const Budget = () => {
 
               <div className="flex items-end justify-between mb-2">
                 <span className="text-2xl font-bold text-white">
-                  ₹{budget.spent}
+                  ₹{spent.toLocaleString()}
                 </span>
                 <span className="text-slate-500 text-sm">
                   / ₹{budget.limit}

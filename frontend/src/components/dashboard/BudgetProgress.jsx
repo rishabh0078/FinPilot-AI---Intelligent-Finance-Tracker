@@ -1,6 +1,6 @@
 import React from 'react'
 import { useApp } from '../../context/AppContext'
-import { categoryColors } from '../../utils/dummyData'
+import { categoryColors } from '../../utils/constants'
 
 const BudgetProgress = () => {
   const { budgets, transactions } = useApp()

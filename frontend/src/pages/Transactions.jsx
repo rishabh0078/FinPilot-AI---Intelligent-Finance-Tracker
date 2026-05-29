@@ -5,7 +5,7 @@ import {
   expenseCategories,
   incomeCategories,
   categoryColors,
-} from '../utils/dummyData'
+} from '../utils/constants'
 import {
   FiPlus,
   FiTrash2,
