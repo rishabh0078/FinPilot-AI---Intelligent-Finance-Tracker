@@ -4,12 +4,6 @@ A full-stack intelligent finance tracker that goes beyond simple budgeting. FinP
 
 Built with React, FastAPI, MongoDB, and a RAG pipeline (ChromaDB + LangChain + Llama 3.3 via Groq).
 
-## Live Demo
-
-You can either create a new account to test it from scratch, or log in instantly using these demo credentials:
-- **Email:** `user@gmail.com`
-- **Password:** `123456`
-
 ## Features
 
 - Track income and expenses
