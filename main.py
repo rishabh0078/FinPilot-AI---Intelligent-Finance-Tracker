@@ -27,7 +27,7 @@ app = FastAPI(title="FinPilot AI", version="1.0.0")
 # frontend URL is injected via the FRONTEND_URL environment variable so
 # the backend accepts requests from whichever domain the frontend is
 # deployed to (e.g. finpilot-frontend.up.railway.app).
-frontend_url = os.getenv("FRONTEND_URL", "http://localhost:5173")
+frontend_url = os.getenv("FRONTEND_URL")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[frontend_url],

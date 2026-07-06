@@ -24,5 +24,6 @@ class LoginModel(BaseModel):
 class UserProfile(BaseModel):
     """Data for updating user profile"""
     name: str | None = None
+    email: str | None = None
     monthly_income: float | None = None
     savings_goal: float | None = None

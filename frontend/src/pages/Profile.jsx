@@ -22,6 +22,7 @@ const Profile = () => {
     // Call the real API
     const success = await updateUserProfile({
       name: form.name,
+      email: form.email,
       monthly_income: Number(form.monthlyIncome),
       savings_goal: Number(form.savingsGoal),
     })

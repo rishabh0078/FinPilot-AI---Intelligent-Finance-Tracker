@@ -105,6 +105,12 @@ def update_profile(profile: UserProfile, user=Depends(get_current_user)):
     update_data = {}
     if profile.name is not None:
         update_data["name"] = profile.name
+    if profile.email is not None:
+        # Check if email is already taken by someone else
+        existing = users_collection.find_one({"email": profile.email, "_id": {"$ne": ObjectId(user_id)}})
+        if existing:
+            raise HTTPException(status_code=400, detail="Email already registered")
+        update_data["email"] = profile.email
     if profile.monthly_income is not None:
         update_data["monthly_income"] = profile.monthly_income
     if profile.savings_goal is not None:
