@@ -12,7 +12,7 @@ pymongo
 python-jose[cryptography]
 
 # AI / RAG pipeline
-chromadb
+langchain-pinecone
 langchain-groq
 langchain-core
 
