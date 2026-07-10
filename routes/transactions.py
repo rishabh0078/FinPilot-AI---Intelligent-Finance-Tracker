@@ -40,7 +40,7 @@ def get_transactions(user=Depends(get_current_user)):
 def add_transaction(transaction: TransactionModel, user=Depends(get_current_user)):
     """
     Adds a new income or expense transaction.
-    Also stores it as an embedding in ChromaDB for AI search.
+    Also stores it as an embedding in Pinecone for AI search.
     """
     user_id = user["user_id"]
 
@@ -58,7 +58,7 @@ def add_transaction(transaction: TransactionModel, user=Depends(get_current_user
     result = transactions_collection.insert_one(new_transaction)
     new_transaction["_id"] = str(result.inserted_id)
 
-    # Store embedding in ChromaDB for RAG (AI will use this later)
+    # Store embedding in Pinecone for RAG (AI will use this later)
     store_transaction_embedding(user_id, new_transaction)
 
     return new_transaction

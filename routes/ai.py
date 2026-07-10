@@ -48,6 +48,7 @@ def ask_ai(request: ChatRequest, user=Depends(get_current_user)):
 
     # Format the summary as a string
     financial_summary = (
+        f"Total Transactions: {len(all_transactions)}\n"
         f"Total Income: ₹{total_income}\n"
         f"Savings Goal: ₹{savings_goal}\n"
         f"Total Expenses: ₹{total_expenses}\n"

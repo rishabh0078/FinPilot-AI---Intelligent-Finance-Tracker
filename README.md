@@ -2,7 +2,7 @@
 
 A full-stack intelligent finance tracker that goes beyond simple budgeting. FinPilot AI features a built-in financial advisor that actively monitors your spending habits and provides personalized, actionable insights based on your exact transaction history.
 
-Built with React, FastAPI, MongoDB, and a RAG pipeline (ChromaDB + LangChain + Llama 3.3 via Groq).
+Built with React, FastAPI, MongoDB, and a RAG pipeline (Pinecone + LangChain + Llama 3.3 via Groq).
 
 ## Features
 
@@ -16,7 +16,7 @@ Built with React, FastAPI, MongoDB, and a RAG pipeline (ChromaDB + LangChain + L
 
 When you ask something like "where am I overspending?", the app:
 
-1. Searches your transaction history in ChromaDB (vector similarity search)
+1. Searches your transaction history in Pinecone (vector similarity search)
 2. Pulls out the relevant transactions
 3. Sends them as context to Llama 3.3 along with your financial summary
 4. Returns a grounded answer using your actual data
@@ -54,7 +54,7 @@ npm run dev
 
 - **Frontend:** React, Tailwind, Recharts
 - **Backend:** FastAPI, PyMongo
-- **AI:** LangChain, ChromaDB, Groq (Llama 3.3 70B)
+- **AI:** LangChain, Pinecone, Groq (Llama 3.3 70B)
 - **Database:** MongoDB Atlas
 - **Auth:** JWT
 
