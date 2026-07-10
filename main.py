@@ -17,9 +17,27 @@ from routes.auth import auth_router
 from routes.transactions import transaction_router
 from routes.budgets import budget_router
 from routes.ai import ai_router
+from database.connection import transactions_collection
+from ai.rag_pipeline import store_transaction_embedding
 
 # Create the FastAPI application
 app = FastAPI(title="FinPilot AI", version="1.0.0")
+
+@app.on_event("startup")
+def sync_chromadb():
+    print("Starting ChromaDB sync from MongoDB...")
+    try:
+        all_transactions = list(transactions_collection.find())
+        count = 0
+        for tx in all_transactions:
+            user_id = str(tx.get("user_id"))
+            # Ensure the transaction has the required fields
+            if user_id and "type" in tx and "category" in tx and "amount" in tx and "description" in tx and "date" in tx:
+                store_transaction_embedding(user_id, tx)
+                count += 1
+        print(f"✅ Successfully synced {count} transactions to ChromaDB!")
+    except Exception as e:
+        print(f"❌ Failed to sync ChromaDB: {e}")
 
 # ------ CORS Setup ------
 # CORS = Cross-Origin Resource Sharing
@@ -27,10 +45,12 @@ app = FastAPI(title="FinPilot AI", version="1.0.0")
 # frontend URL is injected via the FRONTEND_URL environment variable so
 # the backend accepts requests from whichever domain the frontend is
 # deployed to (e.g. finpilot-frontend.up.railway.app).
-frontend_url = os.getenv("FRONTEND_URL")
+frontend_url = os.getenv("FRONTEND_URL", "http://localhost:5173")
+origins = list(set(["http://localhost:5173", frontend_url]))
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[frontend_url],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
     allow_headers=["*"],  # Allow all headers

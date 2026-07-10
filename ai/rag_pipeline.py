@@ -20,8 +20,8 @@ from ai.prompts import FINANCE_ADVISOR_PROMPT
 import os
 
 # ------ ChromaDB Setup ------
-# PersistentClient saves embeddings to disk (survives server restarts)
-chroma_client = chromadb.PersistentClient(path="./chroma_data")
+# EphemeralClient keeps data in memory (we sync it from MongoDB on startup)
+chroma_client = chromadb.EphemeralClient()
 
 
 def get_collection(user_id: str):
