@@ -176,9 +176,12 @@ export const AppProvider = ({ children }) => {
 
   // ========== AI CHAT FUNCTION ==========
 
+  const [isAiLoading, setIsAiLoading] = useState(false)
+
   const sendAiMessage = async (message) => {
     // Add user message to UI immediately
     setAiMessages((prev) => [...prev, { role: 'user', content: message }])
+    setIsAiLoading(true)
 
     try {
       const res = await API.post('/ai/chat', { question: message })
@@ -193,6 +196,8 @@ export const AppProvider = ({ children }) => {
         ...prev,
         { role: 'assistant', content: "Sorry, I ran into an error connecting to my brain. Please try again later." },
       ])
+    } finally {
+      setIsAiLoading(false)
     }
   }
 
@@ -229,6 +234,7 @@ export const AppProvider = ({ children }) => {
     deleteBudget,
     aiMessages,
     sendAiMessage,
+    isAiLoading,
     totalIncome,
     totalExpenses,
     currentSavings,

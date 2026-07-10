@@ -4,7 +4,7 @@ import { useApp } from '../context/AppContext'
 import { FiSend, FiCpu, FiUser } from 'react-icons/fi'
 
 const AiInsights = () => {
-  const { aiMessages, sendAiMessage, totalIncome, totalExpenses, currentSavings } = useApp()
+  const { aiMessages, sendAiMessage, isAiLoading, totalIncome, totalExpenses, currentSavings } = useApp()
   const [input, setInput] = useState('')
   const messagesEndRef = useRef(null)
 
@@ -78,6 +78,23 @@ const AiInsights = () => {
                 </div>
               </motion.div>
             ))}
+            {/* Typing indicator bubble */}
+            {isAiLoading && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex gap-3"
+              >
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-emerald-500/10">
+                  <FiCpu className="text-emerald-500 text-sm" />
+                </div>
+                <div className="bg-slate-800 rounded-xl px-4 py-3 flex items-center gap-1.5">
+                  <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                </div>
+              </motion.div>
+            )}
             <div ref={messagesEndRef} />
           </div>
 
@@ -112,7 +129,8 @@ const AiInsights = () => {
             />
             <button
               type="submit"
-              className="bg-emerald-500 hover:bg-emerald-600 text-white p-3 rounded-xl transition-all"
+              disabled={isAiLoading}
+              className="bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed text-white p-3 rounded-xl transition-all"
             >
               <FiSend size={18} />
             </button>
