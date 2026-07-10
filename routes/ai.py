@@ -38,17 +38,17 @@ def ask_ai(request: ChatRequest, user=Depends(get_current_user)):
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
         
-    monthly_income = db_user.get("monthly_income", 0)
     savings_goal = db_user.get("savings_goal", 0)
 
-    # Calculate total expenses from transactions
-    transactions = list(transactions_collection.find({"user_id": user_id, "type": "expense"}))
-    total_expenses = sum(t["amount"] for t in transactions)
-    current_savings = monthly_income - total_expenses
+    # Calculate total income and expenses dynamically from transactions
+    all_transactions = list(transactions_collection.find({"user_id": user_id}))
+    total_income = sum(t["amount"] for t in all_transactions if t.get("type") == "income")
+    total_expenses = sum(t["amount"] for t in all_transactions if t.get("type") == "expense")
+    current_savings = total_income - total_expenses
 
     # Format the summary as a string
     financial_summary = (
-        f"Monthly Income: ₹{monthly_income}\n"
+        f"Total Income: ₹{total_income}\n"
         f"Savings Goal: ₹{savings_goal}\n"
         f"Total Expenses: ₹{total_expenses}\n"
         f"Current Savings: ₹{current_savings}"
