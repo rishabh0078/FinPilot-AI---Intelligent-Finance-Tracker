@@ -63,5 +63,5 @@ def ask_ai(request: ChatRequest, user=Depends(get_current_user)):
         
         return {"answer": ai_response}
     except Exception as e:
-        # If Groq API fails or ChromaDB errors out
+        # If Groq API fails or Pinecone query errors out
         raise HTTPException(status_code=500, detail=f"AI Engine Error: {str(e)}")
